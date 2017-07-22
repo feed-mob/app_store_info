@@ -7,6 +7,7 @@ module AppStoreInfo
     6016 => 'Entertainment',
     6015 => 'Finance',
     6023 => 'Food & Drink',
+    6024 => 'Shopping',
     6014 => 'Games',
     6013 => 'Health & Fitness',
     6012 => 'Lifestyle',
