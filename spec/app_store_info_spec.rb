@@ -13,6 +13,7 @@ describe AppStoreInfo do
   let(:osx) { 'https://itunes.apple.com/pt/app/slack/id803453959?mt=12' }
   let(:flooz) { 'https://itunes.apple.com/fr/app/flooz/id940393916' }
   let(:flooz_wrong_region) { 'https://itunes.apple.com/pt/app/flooz/id940393916' }
+  let(:words_with_friends) { 'https://itunes.apple.com/app/id804379658' }
   let(:bad) { 'https://www.google.pt/?gws_rd=ssl#q=http://itunes.apple.com' }
   let(:loisir) do
     'https://itunes.apple.com/app/apple-store/id987860898?pt=110416813&ct=le-www-footer&mt=8'
@@ -139,6 +140,17 @@ describe AppStoreInfo do
         expect(response.id).to eq(987_860_898)
         expect(response.name).to eq('Loisirs Enchères')
         expect(response.url).to eq('http://www.loisirsencheres.com/content/merchant')
+        expect(response.currency).to eq('USD')
+      end
+    end
+
+    it 'returns the right info when the link has only appid' do
+      VCR.use_cassette('words_with_friends') do
+        response = described_class.read_url(words_with_friends)
+
+        expect(response.id).to eq(804_379_658)
+        expect(response.name).to eq('Words With Friends – Word Game')
+        expect(response.url).to eq('https://zynga.com/games/words-friends')
         expect(response.currency).to eq('USD')
       end
     end
