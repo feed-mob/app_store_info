@@ -1,10 +1,19 @@
-require: rubocop-rspec
+require:
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
 
 Metrics/LineLength:
   Max: 100
 
 Style/Documentation:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
 
 Style/NumericLiterals:
   Enabled: false
@@ -16,4 +25,16 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/ExampleLength:
+  Enabled: false
+
+# I hate this stupid rule, that makes tests hard to understand
+RSpec/PredicateMatcher:
+  Enabled: false
+
+# We still need the # coding utf-8 comment for older ruby versions
+Style/Encoding:
+  Enabled: false
+
+# Although using .match? makes sense for ruby 2.4+ in previous versions it doesn't work
+Performance/RegexpMatch:
   Enabled: false
