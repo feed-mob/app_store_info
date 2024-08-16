@@ -3,6 +3,23 @@
 require 'spec_helper'
 
 describe AppStoreInfo do
+  let(:gleam) { 'https://itunes.apple.com/us/app/gleam-inspiration/id599015198' }
+  let(:hstone) { 'https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=625257520' }
+  let(:birds) { 'https://itunes.apple.com/gb/app/angry-birds/id343200656?mt=8' }
+  let(:birds2) { 'https://itunes.apple.com/en/app/angry-birds/id343200656?mt=8' }
+  let(:coach) { 'https://itunes.apple.com/us/app/coacher-soccer-coaching-software/id918079650' }
+  let(:videos) { 'https://itunes.apple.com/us/app/zaps-share-videos-by-location/id975333802?mt=8' }
+  let(:moto) { 'https://itunes.apple.com/us/app/moto-x-mayhem/id323438913?mt=8' }
+  let(:bogus) { 'https://itunes.apple.com/us/app/bogus/id0909099090990909?mt=8' }
+  let(:osx) { 'https://itunes.apple.com/pt/app/slack/id803453959?mt=12' }
+  let(:flooz) { 'https://itunes.apple.com/fr/app/flooz/id940393916' }
+  let(:flooz_wrong_region) { 'https://itunes.apple.com/pt/app/flooz/id940393916' }
+  let(:words_with_friends) { 'https://itunes.apple.com/app/id804379658' }
+  let(:bad) { 'https://www.google.pt/?gws_rd=ssl#q=http://itunes.apple.com' }
+  let(:loisir) do
+    'https://itunes.apple.com/app/apple-store/id987860898?pt=110416813&ct=le-www-footer&mt=8'
+  end
+
   it 'has a version number' do
     expect(AppStoreInfo::VERSION).not_to be_nil
   end
@@ -152,6 +169,17 @@ describe AppStoreInfo do
         expect(response.id).to eq(987_860_898)
         expect(response.name).to eq('Loisirs Enchères')
         expect(response.url).to eq('http://www.loisirsencheres.com/content/merchant')
+        expect(response.currency).to eq('USD')
+      end
+    end
+
+    it 'returns the right info when the link has only appid' do
+      VCR.use_cassette('words_with_friends') do
+        response = described_class.read_url(words_with_friends)
+
+        expect(response.id).to eq(804_379_658)
+        expect(response.name).to eq('Words With Friends – Word Game')
+        expect(response.url).to eq('https://zynga.com/games/words-friends')
         expect(response.currency).to eq('USD')
       end
     end
